@@ -9,14 +9,28 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-import dj_database_url, os
+import dj_database_url, os, logging
 from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# DATABASE_URL = os.getenv("DATABASE_URL")
-# SECRET_KEY = os.getenv("SECRET_KEY")
+
+# Уровень логирования: DEBUG, INFO, WARNING, ERROR, CRITICAL
+LOG_LEVEL = 'DEBUG'
+
+# Формат записей логов
+LOG_FORMAT = '%(asctime)s - %(levelname)s - %(message)s'
+
+# Путь к файлу, куда будут записываться логи
+LOG_FILE = 'django.log'
+
+# Настройка логирования
+logging.basicConfig(
+    level=LOG_LEVEL,
+    format=LOG_FORMAT,
+    filename=LOG_FILE,
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -33,8 +47,6 @@ DEBUG = os.environ.get("DEBUG", "False").lower() == "True"
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split()
-
-print(ALLOWED_HOSTS)
 
 # Application definition
 
@@ -90,6 +102,10 @@ DATABASES = {
     }
 }
 
+
+# db_from_env = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'].update(db_from_env)
+
 # Replace the SQLite DATABASES configuration with PostgreSQL:
 # DATABASES = {
 #     'default': dj_database_url.config(
@@ -99,9 +115,8 @@ DATABASES = {
 #         )
 #     }
 database_url = os.environ.get("DATABASE_URL")
-print(database_url)
 
-# DATABASES["default"] = dj_database_url.parse("postgres://task_manager_un3g_user:as8xbW7nn8UZCVEl11mWlXA2UeT9Oih5@dpg-cnd235qcn0vc73f4orpg-a.frankfurt-postgres.render.com/task_manager_un3g")
+DATABASES["default"] = dj_database_url.parse(database_url)
 
 
 # Password validation
