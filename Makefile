@@ -6,3 +6,6 @@ gunicorn:
 
 requirements:
 	poetry export -f requirements.txt --output requirements.txt --without-hashes
+
+make lint:
+	poetry run flake8 task_manager
