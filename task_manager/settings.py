@@ -18,20 +18,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-# Уровень логирования: DEBUG, INFO, WARNING, ERROR, CRITICAL
-LOG_LEVEL = 'DEBUG'
-
-# Формат записей логов
-LOG_FORMAT = '%(asctime)s - %(levelname)s - %(message)s'
-
-# Путь к файлу, куда будут записываться логи
-LOG_FILE = 'django.log'
-
-# Настройка логирования
+# Setting up logging
 logging.basicConfig(
-    level=LOG_LEVEL,
-    format=LOG_FORMAT,
-    filename=LOG_FILE,
+    level='DEBUG',
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    filename='django.log',
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -59,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'task_manager',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.locale.LocaleMiddleware', # translate text
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
