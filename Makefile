@@ -9,3 +9,6 @@ requirements:
 
 make lint:
 	poetry run flake8 task_manager
+
+make static:
+	python manage.py collectstatic

@@ -39,3 +39,4 @@ coverage.xml
 *.sqlite3
 staticfiles
 *.log
+my_test_index.html
