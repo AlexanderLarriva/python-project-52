@@ -153,3 +153,5 @@ if not DEBUG:    # Tell Django to copy static assets into a path called `staticf
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+AUTH_USER_MODEL = 'users.CustomUser'
