@@ -52,7 +52,10 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'django_extensions',
     'task_manager',
-    'task_manager.users'
+    'task_manager.users',
+    'task_manager.statuses',
+    'task_manager.tasks',
+    'task_manager.labels'
 ]
 
 MIDDLEWARE = [
