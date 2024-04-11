@@ -1,10 +1,17 @@
 [tool.poetry]
 name = "hexlet-code"
 version = "0.1.0"
-description = "4th study project"
+description = "Task manager Django app"
 authors = ["Alexander & Ludmila Markiza <alarriva@yandex.ru>"]
+repository = "https://github.com/AlexanderLarriva/python-project-52"
 readme = "README.md"
 packages = [{include = "task_manager"}]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
 
 [tool.poetry.dependencies]
 python = "^3.10"
