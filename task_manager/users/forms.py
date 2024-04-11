@@ -10,7 +10,12 @@ class RegistrationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name', 'username', 'password1', 'password2']
+        fields = [
+            'first_name',
+            'last_name',
+            'username',
+            'password1',
+            'password2']
 
 
 class UserUpdateForm(forms.ModelForm):
@@ -21,7 +26,11 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name', 'username', 'password1', 'password2']
+        fields = ['first_name',
+                  'last_name',
+                  'username',
+                  'password1',
+                  'password2']
 
     def clean_password2(self):
         # Check that the two password entries match

@@ -6,7 +6,6 @@ from django.contrib.auth.views import redirect_to_login
 
 
 class CustomLoginRequiredMixin(AccessMixin):
-    """Verify that the current user is authenticated"""
 
     # Default url and message. Can be overriden in view.
     login_url = '/login/'
@@ -34,17 +33,13 @@ class CustomLoginRequiredMixin(AccessMixin):
 
 
 class CustomUserPassesTestMixin(AccessMixin):
-    """
-    Deny a request and show error message if user not themself.
-    Differs from the basic one in django, by possibility
-    to add a message and link to redirect,
-    the default one shows a 403 error.
-    """
+
     my_perm_denied_url_string = 'users:users'
     permission_denied_message = ""
 
     def handle_no_permission(self):
-        messages.add_message(self.request, messages.ERROR, self.permission_denied_message)
+        messages.add_message(self.request, messages.ERROR,
+                             self.permission_denied_message)
         return redirect(reverse_lazy(self.my_perm_denied_url_string))
 
     # Default test

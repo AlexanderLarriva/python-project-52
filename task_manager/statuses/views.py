@@ -12,7 +12,7 @@ from task_manager.users.mixins import CustomLoginRequiredMixin
 
 
 class ShowStatuses(CustomLoginRequiredMixin, ListView):
-    """Show all statuses"""
+
     model = Status
     template_name = 'statuses/statuses_index.html'
     context_object_name = 'statuses'
@@ -22,7 +22,7 @@ class ShowStatuses(CustomLoginRequiredMixin, ListView):
 class CreateStatus(CustomLoginRequiredMixin,
                    SuccessMessageMixin,
                    CreateView):
-    """Create new status"""
+
     model = Status
     template_name = 'form.html'
     form_class = StatusForm
@@ -37,7 +37,7 @@ class CreateStatus(CustomLoginRequiredMixin,
 class UpdateStatus(CustomLoginRequiredMixin,
                    SuccessMessageMixin,
                    UpdateView):
-    """Update status"""
+
     model = Status
     template_name = 'form.html'
     form_class = StatusForm
@@ -52,7 +52,7 @@ class UpdateStatus(CustomLoginRequiredMixin,
 class DeleteStatus(CustomLoginRequiredMixin,
                    SuccessMessageMixin,
                    DeleteView):
-    """Delete status"""
+
     model = Status
     template_name = 'delete_confirmation_form.html'
     success_url = reverse_lazy('statuses:statuses')

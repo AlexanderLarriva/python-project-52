@@ -9,7 +9,7 @@ from task_manager.utils import get_test_data
 
 
 class UsersTestCase(TestCase):
-    """Test users CRUD"""
+
     fixtures = ['users.json']
 
     @classmethod
@@ -46,7 +46,8 @@ class UsersTestCase(TestCase):
 
     def test_update_page_redirect_if_not_logged_in(self):
         user = CustomUser.objects.get(pk=3)
-        response = self.client.get(reverse('users:update_user', kwargs={'pk': user.pk}))
+        response = self.client.get(reverse('users:update_user',
+                                           kwargs={'pk': user.pk}))
         # Manually check redirect
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.startswith('/login/'))
@@ -56,7 +57,8 @@ class UsersTestCase(TestCase):
         user = CustomUser.objects.get(pk=3)
         self.client.force_login(user)
         # GET page
-        response = self.client.get(reverse('users:update_user', kwargs={'pk': user.pk}))
+        response = self.client.get(reverse('users:update_user',
+                                           kwargs={'pk': user.pk}))
         self.assertEqual(response.status_code, 200)
         # update user
         new_data = self.test_data['user_after_update']
@@ -73,12 +75,14 @@ class UsersTestCase(TestCase):
         user = CustomUser.objects.get(pk=3)
         self.client.force_login(user)
         # Try GET update page of different user
-        response = self.client.get(reverse('users:update_user', kwargs={'pk': 1}))
+        response = self.client.get(reverse('users:update_user',
+                                           kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 302)
 
     def test_delete_page_redirect_if_not_logged_in(self):
         user = CustomUser.objects.get(pk=4)
-        response = self.client.get(reverse('users:delete_user', kwargs={'pk': user.pk}))
+        response = self.client.get(reverse('users:delete_user',
+                                           kwargs={'pk': user.pk}))
         # Manually check redirect
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.startswith('/login/'))
@@ -88,10 +92,12 @@ class UsersTestCase(TestCase):
         user = CustomUser.objects.get(pk=4)
         self.client.force_login(user)
         # GET page
-        response = self.client.get(reverse('users:delete_user', kwargs={'pk': user.pk}))
+        response = self.client.get(reverse('users:delete_user',
+                                           kwargs={'pk': user.pk}))
         self.assertEqual(response.status_code, 200)
         # delete user
-        response = self.client.post(reverse('users:delete_user', kwargs={'pk': user.pk}))
+        response = self.client.post(reverse('users:delete_user',
+                                            kwargs={'pk': user.pk}))
         self.assertRedirects(response, reverse('users:users'))
         with self.assertRaises(ObjectDoesNotExist):
             CustomUser.objects.get(pk=4)
@@ -101,5 +107,6 @@ class UsersTestCase(TestCase):
         user = CustomUser.objects.get(pk=3)
         self.client.force_login(user)
         # Try GET page of different user
-        response = self.client.get(reverse('users:update_user', kwargs={'pk': 1}))
+        response = self.client.get(reverse('users:update_user',
+                                           kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 302)

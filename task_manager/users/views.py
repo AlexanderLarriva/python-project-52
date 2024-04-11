@@ -5,7 +5,10 @@ from django.utils.translation import gettext_lazy as _
 
 from task_manager.users.forms import RegistrationForm, UserUpdateForm
 from task_manager.users.models import CustomUser
-from task_manager.users.mixins import CustomLoginRequiredMixin, CustomUserPassesTestMixin
+from task_manager.users.mixins import (
+    CustomLoginRequiredMixin,
+    CustomUserPassesTestMixin
+)
 
 from django.http import HttpResponseRedirect
 from django.contrib import messages
@@ -13,7 +16,7 @@ from django.db.models import ProtectedError
 
 
 class UsersList(ListView):
-    """Show users on page users"""
+
     model = CustomUser
     template_name = 'users/userlist.html'
     context_object_name = 'user_list'
@@ -23,7 +26,7 @@ class UsersList(ListView):
 
 
 class RegisterUser(SuccessMessageMixin, CreateView):
-    """Create new user"""
+
     template_name = 'users/form.html'
     form_class = RegistrationForm
     success_url = reverse_lazy('login')
@@ -38,10 +41,7 @@ class UpdateUser(CustomLoginRequiredMixin,
                  CustomUserPassesTestMixin,
                  SuccessMessageMixin,
                  UpdateView):
-    """
-    Change user.
-    User shoud be logged in and can update only themself.
-    """
+
     login_url = '/login/'
     login_required_message = _('You are not authorized! Please, log in.')
 
@@ -63,10 +63,7 @@ class UpdateUser(CustomLoginRequiredMixin,
 class DeleteUser(CustomLoginRequiredMixin,
                  CustomUserPassesTestMixin,
                  DeleteView):
-    """
-    Delete user.
-    User shoud be logged in and can delete only themself.
-    """
+
     login_url = '/login/'
     login_required_message = _('You are not authorized! Please, log in.')
 

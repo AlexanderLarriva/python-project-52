@@ -9,7 +9,6 @@ from task_manager.labels.models import Label
 
 
 class TaskUrlsTest(TestCase):
-    """Test that urls cannot be accessed without login"""
 
     def test_index_page_without_login(self):
         response = self.client.get(reverse('tasks:tasks'))
@@ -22,26 +21,26 @@ class TaskUrlsTest(TestCase):
         self.assertTrue(response.url.startswith('/login/'))
 
     def test_update_task_page_without_login(self):
-        response = self.client.get(reverse('tasks:update_task', kwargs={'pk': 1}))
+        response = self.client.get(reverse('tasks:update_task',
+                                           kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.startswith('/login/'))
 
     def test_delete_task_page_without_login(self):
-        response = self.client.get(reverse('tasks:delete_task', kwargs={'pk': 1}))
+        response = self.client.get(reverse('tasks:delete_task',
+                                           kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.startswith('/login/'))
 
     def test_show_task_page_without_login(self):
-        response = self.client.get(reverse('tasks:show_task', kwargs={'pk': 1}))
+        response = self.client.get(reverse('tasks:show_task',
+                                           kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.startswith('/login/'))
 
 
 class TaskTest(TestCase):
-    """
-    Test task CRUD,
-    user is authorized
-    """
+
     fixtures = [
         'tasks.json',
         'users.json',
@@ -78,8 +77,10 @@ class TaskTest(TestCase):
     def assertTask(self, task, task_data):
         self.assertEqual(task.name, task_data['name'])
         self.assertEqual(task.description, task_data['description'])
-        self.assertEqual(task.status, Status.objects.get(pk=task_data['status']))
-        self.assertEqual(task.executor, CustomUser.objects.get(pk=task_data['executor']))
+        self.assertEqual(task.status,
+                         Status.objects.get(pk=task_data['status']))
+        self.assertEqual(task.executor,
+                         CustomUser.objects.get(pk=task_data['executor']))
 
     def test_index_page(self):
         response = self.client.get(reverse('tasks:tasks'))
@@ -94,7 +95,8 @@ class TaskTest(TestCase):
 
     def test_task_page(self):
         task = Task.objects.last()
-        response = self.client.get(reverse('tasks:show_task', kwargs={'pk': task.pk}))
+        response = self.client.get(reverse('tasks:show_task',
+                                           kwargs={'pk': task.pk}))
         self.assertEqual(response.status_code, 200)
         task_page_data = response.context['task']
         self.assertEqual(task.name, task_page_data.name)
@@ -109,7 +111,8 @@ class TaskTest(TestCase):
         response = self.client.get(reverse('tasks:create_task'))
         self.assertEqual(response.status_code, 200)
         # Create task
-        response = self.client.post(reverse('tasks:create_task'), self.new_data, follow=True)
+        response = self.client.post(reverse('tasks:create_task'),
+                                    self.new_data, follow=True)
         self.assertRedirects(response, reverse('tasks:tasks'))
         new_task = Task.objects.last()
         self.assertTask(new_task, self.new_data)
@@ -119,7 +122,8 @@ class TaskTest(TestCase):
     def test_update_task(self):
         task = Task.objects.last()
         # GET page
-        response = self.client.get(reverse('tasks:update_task', kwargs={'pk': task.pk}))
+        response = self.client.get(reverse('tasks:update_task',
+                                           kwargs={'pk': task.pk}))
         self.assertEqual(response.status_code, 200)
         # Update task
         response = self.client.post(
@@ -135,17 +139,20 @@ class TaskTest(TestCase):
 
     def test_user_delete_own_task(self):
         # GET page
-        response = self.client.get(reverse('tasks:delete_task', kwargs={'pk': 1}))
+        response = self.client.get(reverse('tasks:delete_task',
+                                           kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 200)
         # Delete task
-        response = self.client.post(reverse('tasks:delete_task', kwargs={'pk': 1}))
+        response = self.client.post(reverse('tasks:delete_task',
+                                            kwargs={'pk': 1}))
         self.assertRedirects(response, reverse('tasks:tasks'))
         with self.assertRaises(ObjectDoesNotExist):
             Task.objects.get(pk=1)
 
     def test_user_delete_task_from_different_author(self):
         # Attempt to GET delete task page of other author
-        response = self.client.get(reverse('tasks:delete_task', kwargs={'pk': 2}))
+        response = self.client.get(reverse('tasks:delete_task',
+                                           kwargs={'pk': 2}))
         self.assertEqual(response.status_code, 302)
 
     def test_filter_task(self):

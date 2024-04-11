@@ -7,7 +7,6 @@ from task_manager.users.models import CustomUser
 
 
 class LabelsUrlsTest(TestCase):
-    """Test that urls cannot be accessed without login"""
 
     def test_index_page_without_login(self):
         response = self.client.get(reverse('labels:labels'))
@@ -20,18 +19,19 @@ class LabelsUrlsTest(TestCase):
         self.assertTrue(response.url.startswith('/login/'))
 
     def test_update_page_without_login(self):
-        response = self.client.get(reverse('labels:update_label', kwargs={'pk': 1}))
+        response = self.client.get(reverse('labels:update_label',
+                                           kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.startswith('/login/'))
 
     def test_delete_page_without_login(self):
-        response = self.client.get(reverse('labels:delete_label', kwargs={'pk': 1}))
+        response = self.client.get(reverse('labels:delete_label',
+                                           kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.startswith('/login/'))
 
 
 class LabelTest(TestCase):
-    """Test label CRUD"""
 
     fixtures = ['labels.json', 'users.json', 'tasks.json', 'statuses.json']
 
@@ -58,14 +58,16 @@ class LabelTest(TestCase):
         response = self.client.get(reverse('labels:create_label'))
         self.assertEqual(response.status_code, 200)
         # Create label
-        response = self.client.post(reverse('labels:create_label'), self.new_data, follow=True)
+        response = self.client.post(reverse('labels:create_label'),
+                                    self.new_data, follow=True)
         self.assertRedirects(response, reverse('labels:labels'))
         new_label = Label.objects.last()
         self.assertEqual(new_label.name, self.new_data['name'])
 
     def test_update_label(self):
         # GET page
-        response = self.client.get(reverse('labels:update_label', kwargs={'pk': 1}))
+        response = self.client.get(reverse('labels:update_label',
+                                           kwargs={'pk': 1}))
         self.assertEqual(response.status_code, 200)
         # Update label
         response = self.client.post(
@@ -80,20 +82,24 @@ class LabelTest(TestCase):
     def test_delete_label(self):
         # GET page
         label = Label.objects.last()
-        response = self.client.get(reverse('labels:delete_label', kwargs={'pk': label.pk}))
+        response = self.client.get(reverse('labels:delete_label',
+                                           kwargs={'pk': label.pk}))
         self.assertEqual(response.status_code, 200)
         # Delete label
-        response = self.client.post(reverse('labels:delete_label', kwargs={'pk': label.pk}))
+        response = self.client.post(reverse('labels:delete_label',
+                                            kwargs={'pk': label.pk}))
         self.assertRedirects(response, reverse('labels:labels'))
         with self.assertRaises(ObjectDoesNotExist):
             Label.objects.get(pk=label.pk)
 
     def test_delete_label_linked_to_task(self):
         # GET page
-        response = self.client.get(reverse('labels:delete_label', kwargs={'pk': 2}))
+        response = self.client.get(reverse('labels:delete_label',
+                                           kwargs={'pk': 2}))
         self.assertEqual(response.status_code, 200)
         # Attemp to delete label
-        response = self.client.post(reverse('labels:delete_label', kwargs={'pk': 2}))
+        response = self.client.post(reverse('labels:delete_label',
+                                            kwargs={'pk': 2}))
         self.assertRedirects(response, reverse('labels:labels'))
         # Object exist
         self.assertTrue(Label.objects.get(pk=2))
